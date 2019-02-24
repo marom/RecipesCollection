@@ -29,6 +29,10 @@ public class Recipe {
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
 
+    @Enumerated(value = EnumType.STRING)
+    private Dificulty dificulty;
+
+
     public Long getId() {
         return id;
     }
@@ -115,5 +119,13 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+    }
+
+    public Dificulty getDificulty() {
+        return dificulty;
+    }
+
+    public void setDificulty(Dificulty dificulty) {
+        this.dificulty = dificulty;
     }
 }
