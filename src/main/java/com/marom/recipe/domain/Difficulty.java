@@ -1,6 +1,6 @@
 package com.marom.recipe.domain;
 
-public enum Dificulty {
+public enum Difficulty {
 
     EASY, MODERATE, KIND_OF_HARD, HARD
 }
