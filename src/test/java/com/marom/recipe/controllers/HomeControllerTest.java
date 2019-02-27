@@ -7,7 +7,11 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +19,9 @@ import java.util.Set;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class HomeControllerTest {
 
@@ -68,5 +75,26 @@ public class HomeControllerTest {
 
         Set<Recipe> setInController = argumentCaptor.getValue();
         assertThat(setInController.size(), is(2));
+    }
+
+    @Test
+    public void mocMvcController() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(homeController)
+                .setViewResolvers(viewResolver())
+                .build();
+
+        mockMvc.perform(get("/recipes"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes"));
+    }
+
+    private ViewResolver viewResolver()
+    {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+
+        viewResolver.setPrefix("classpath:templates/");
+        viewResolver.setSuffix(".html");
+
+        return viewResolver;
     }
 }
