@@ -49,8 +49,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testGetNewRecipeForm() throws Exception {
-        RecipeCommand command = new RecipeCommand();
+    public void getNewRecipeForm() throws Exception {
 
         mockMvc.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
@@ -59,7 +58,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testPostNewRecipeForm() throws Exception {
+    public void postNewRecipeForm() throws Exception {
         RecipeCommand command = new RecipeCommand();
         command.setId(2L);
 
@@ -75,7 +74,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testGetUpdateView() throws Exception {
+    public void getUpdateView() throws Exception {
         RecipeCommand command = new RecipeCommand();
         command.setId(2L);
 
@@ -86,4 +85,6 @@ public class RecipeControllerTest {
                 .andExpect(view().name("recipe/addRecipe"))
                 .andExpect(model().attributeExists("recipe"));
     }
+
+
     }
