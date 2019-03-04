@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class IngredientServiceImpl extends IngredientService {
+public class IngredientServiceImpl implements IngredientService {
 
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
     private final RecipeRepository recipeRepository;
