@@ -1,6 +1,8 @@
 package com.marom.recipe.controllers;
 
+import com.marom.recipe.commands.IngredientCommand;
 import com.marom.recipe.commands.RecipeCommand;
+import com.marom.recipe.services.IngredientService;
 import com.marom.recipe.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,9 @@ public class IngredientControllerTest {
 
     @Mock
     RecipeService recipeService;
+
+    @Mock
+    IngredientService ingredientService;
 
     @InjectMocks
     IngredientController ingredientController;
@@ -46,5 +51,22 @@ public class IngredientControllerTest {
                 .andExpect(model().attributeExists("recipe"));
 
         verify(recipeService, times(1)).findCommandById(anyLong());
+    }
+
+    @Test
+    public void showIngredientDetails() throws Exception {
+
+        //given
+        IngredientCommand ingredientCommand = new IngredientCommand();
+
+        //when
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+
+        //then
+        mockMvc.perform(get("/recipe/1/ingredient/2/show")).andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"));
+
+        verify(ingredientService, times(1)).findByRecipeIdAndIngredientId(anyLong(), anyLong());
     }
 }
