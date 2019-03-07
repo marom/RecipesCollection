@@ -7,8 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -40,8 +43,12 @@ public class RecipeController {
     }
 
     @PostMapping("recipe")
-    public String saveOrUpdateRecipe(@ModelAttribute RecipeCommand recipeCommand) {
+    public String saveOrUpdateRecipe(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult bindingResult) {
 
+        if (bindingResult.hasErrors()){
+            bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
+            return "recipe/addRecipe";
+        }
         RecipeCommand savedRecipe = recipeService.saveRecipeCommand(recipeCommand);
 
         return "redirect:/recipe/" + savedRecipe.getId() + "/show" ;
