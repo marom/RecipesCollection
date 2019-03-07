@@ -2,6 +2,7 @@ package com.marom.recipe.controllers;
 
 import com.marom.recipe.commands.RecipeCommand;
 import com.marom.recipe.domain.Recipe;
+import com.marom.recipe.exceptions.NotFoundException;
 import com.marom.recipe.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -92,6 +93,16 @@ public class RecipeControllerTest {
         mockMvc.perform(get("/recipe/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipes"));
+    }
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
     }
 
     }
